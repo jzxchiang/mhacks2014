@@ -170,10 +170,33 @@ angular.module('core').controller('HeaderController', [
 ]);'use strict';
 angular.module('core').controller('HomeController', [
   '$scope',
+  '$http',
   'Authentication',
-  function ($scope, Authentication) {
+  function ($scope, $http, Authentication) {
     // This provides Authentication context.
     $scope.authentication = Authentication;
+    $scope.credentials = {
+      name: '',
+      email: '',
+      interests: []
+    };
+    $scope.currentStep = 1;
+    $scope.postUser = function () {
+      $http.post('/users', $scope.credentials).success(function (response) {
+        // If successful we assign the response to the global user model
+        $scope.authentication.user = response;
+        // And redirect to the index page
+        console.log('hello');
+      }).error(function (response) {
+        $scope.error = response.message;
+      });
+    };
+    $scope.addInterest = function () {
+      if ($scope.tempInterest) {
+        $scope.credentials.interests.push($scope.tempInterest);
+        $scope.tempInterest = '';
+      }
+    };
   }
 ]);'use strict';
 //Menu service used for managing  menus
@@ -389,7 +412,12 @@ angular.module('users').controller('AuthenticationController', [
     if ($scope.authentication.user)
       $location.path('/');
     $scope.signup = function () {
-      $http.post('/auth/signup', $scope.credentials).success(function (response) {
+      $scope.credentials.interests = [
+        'dog',
+        'cat',
+        'four'
+      ];
+      $http.post('/users', $scope.credentials).success(function (response) {
         // If successful we assign the response to the global user model
         $scope.authentication.user = response;
         // And redirect to the index page

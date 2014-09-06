@@ -18,7 +18,7 @@ var transporter = nodemailer.createTransport({
     }
 });
 
-var sendEmail = function (user, matchedUser) {
+function _sendEmail (user, matchedUser) {
 	var mailOptions = {
 	    from: 'MHacks ✔ <nodemailer122895@gmail.com>', // sender address
 	    to: user.email, // list of receivers
@@ -31,42 +31,34 @@ var sendEmail = function (user, matchedUser) {
 	transporter.sendMail(mailOptions, function(error, info){
 	    if(error){
 	        console.log(error);
-	    }else{
+	    } else {
 	        console.log('Message sent: ' + info.response);
 	    }
 	});
-};
+}
 
 function _matchUser (user) {
-	console.log("matchUser called");
 	var maxMatches = 0;
 	var bestMatchSoFar;
 	User.find({}, function (err, allUsers) {
-		console.log('found:' + allUsers);
 		_.forEach(allUsers, function (otherUser) {
-			console.log('user.interests: ' + user.interests.constructor);
 			var matchedInterests = user.interests.filter(function (interest) {
 				return otherUser.interests.indexOf(interest) !== -1;
 			});			
-			// console.log('matchedInterests: ' + user.interests.constructor);
 
-
-			console.log('matchedInterests: ' + matchedInterests.constructor);
-			console.log('matchedInterests length: ' + matchedInterests.length);
 			if (matchedInterests.length > maxMatches) {
 				maxMatches = matchedInterests.length;
 				bestMatchSoFar = otherUser;
 			}
 		});
 		if (bestMatchSoFar) {
-			console.log(bestMatchSoFar);
-			sendEmail(user, bestMatchSoFar);
-			sendEmail(bestMatchSoFar, user);
+			_sendEmail(user, bestMatchSoFar);
+			_sendEmail(bestMatchSoFar, user);
 		}
 	});
 
 
-};
+}
 
 
 var create = function (req, res) {
@@ -77,7 +69,6 @@ var create = function (req, res) {
 	async.each(user.interests, function (interest, done) {
 		Interest.findOne({'name': interest}, function (err, interestDoc) {
 			if (interestDoc) {
-				console.log('matched: ' + interestDoc._id);
 				interestIds.push(mongoose.Types.ObjectId(interestDoc._id));
 				done();
 			} else {
@@ -89,16 +80,11 @@ var create = function (req, res) {
 			}
 		});
 	}, function (err) {
-		console.log(interestIds);
 		user.interests = interestIds;
 
-		console.log(user);
 		var userModel = new User(user);
-		console.log(userModel);
 		userModel.save(function (err) {
 			if (!err) {
-				console.log('saved wihtout error');
-				// res.jsonp('Works great!');
 				_matchUser(user);
 			} else {
 				console.log(err);
