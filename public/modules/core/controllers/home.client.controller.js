@@ -11,16 +11,25 @@ angular.module('core').controller('HomeController', ['$scope', '$http', 'Authent
 		};
 		$scope.currentStep = 1;
 
-		$scope.postUser = function () {
-			$http.post('/users', $scope.credentials).success(function(response) {
-				// If successful we assign the response to the global user model
-				$scope.authentication.user = response;
+		$scope.checkInterests = function () {
+			if ($scope.credentials.interests.length !== 0) {
+				$scope.currentStep = 2;
+			}
+		};
 
-				// And redirect to the index page
-				console.log('hello');
-			}).error(function(response) {
-				$scope.error = response.message;
-			});
+		$scope.postUser = function () {
+			if ($scope.credentials.email && $scope.credentials.name) {
+				$http.post('/users', $scope.credentials).success(function(response) {
+					// If successful we assign the response to the global user model
+					$scope.authentication.user = response;
+
+					// And redirect to the index page
+					console.log('hello');
+				}).error(function(response) {
+					$scope.error = response.message;
+				});
+				$scope.currentStep = 3;
+			}
 		};
         
         $scope.addInterest = function () {
@@ -28,6 +37,10 @@ angular.module('core').controller('HomeController', ['$scope', '$http', 'Authent
                 $scope.credentials.interests.push($scope.tempInterest);
                 $scope.tempInterest = '';
             }
+        };
+
+        $scope.validateColumbiaEmail = function () {
+
         };
     }
 ]);

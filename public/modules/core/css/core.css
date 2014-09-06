@@ -37,6 +37,11 @@ body {
 	-webkit-font-smoothing: antialiased;
 }
 
+.form-control::-webkit-input-placeholder {
+	color: #d3d3d3;
+	font-style: italic;
+}
+
 .title-color {
 	color: #3260c7;
 	font-size: 36px;

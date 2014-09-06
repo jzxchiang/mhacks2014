@@ -9,13 +9,13 @@
 			<fieldset>
 				<div class="form-group text-center">
 					<p>What are your interests?</p>
-					<input type="text" class="form-control" ng-model="$parent.tempInterest">
+					<input type="text" class="form-control" ng-model="$parent.tempInterest" placeholder="Press Enter for each of your interests">
 				</div>
 			</fieldset>
 		</form>
 		<br>
         <div class="text-center form-group">
-            <button ng-click="$parent.currentStep = 2" class="btn flat-green">Next</button>
+            <button ng-click="$parent.checkInterests()" class="btn flat-green">Next</button>
         </div>
         <br>
         <table class="table text-center">
@@ -41,7 +41,7 @@
 				</div>
 				<br>
 				<div class="text-center form-group">
-					<button ng-click="$parent.postUser(); $parent.currentStep = 3" class="btn flat-green">Next</button>
+					<button ng-click="$parent.postUser()" class="btn flat-green">Next</button>
 				</div>
 			</fieldset>
 		</div>
