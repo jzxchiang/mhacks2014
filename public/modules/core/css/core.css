@@ -42,6 +42,14 @@ body {
 	font-style: italic;
 }
 
+.red-placeholder::-webkit-input-placeholder {
+	color: #FA787E;
+}
+
+.red-border {
+	border-color: #FA787E;
+}
+
 .title-color {
 	color: #3260c7;
 	font-size: 36px;

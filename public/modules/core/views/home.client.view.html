@@ -8,8 +8,8 @@
 		<form ng-submit="$parent.addInterest()"  class="signin form-horizontal">
 			<fieldset>
 				<div class="form-group text-center">
-					<p>What are your interests?</p>
-					<input type="text" class="form-control" ng-model="$parent.tempInterest" placeholder="Press Enter for each of your interests">
+					<p>What are your interests (one at a time)?</p>
+					<input id="input-one" type="text" class="form-control shorter" ng-model="$parent.tempInterest" ng-maxlength="16" style="width: 425px; display: inline-block;" placeholder="Press Enter after each interest...">
 				</div>
 			</fieldset>
 		</form>
@@ -33,11 +33,11 @@
 			<fieldset>
 				<div class="form-group">
 					<p>What's your name?</p>
-					<input type="text" required class="form-control" ng-model="$parent.credentials.name">
+					<input id="input-two" type="text" required class="form-control" ng-model="$parent.credentials.name">
 				</div>
 				<div class="form-group">
 					<p>And your email?</p>
-					<input type="email" required class="form-control" ng-model="$parent.credentials.email" ng-pattern="/@columbia.edu$/">
+					<input id="input-three" type="email" required class="form-control" ng-model="$parent.credentials.email" ng-pattern="/@columbia.edu$/">
 				</div>
 				<br>
 				<div class="text-center form-group">
