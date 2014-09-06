@@ -1,20 +1,22 @@
 <section data-ng-controller="HomeController">
 	<br><br><br><br><br><br><br><br><br><br><br><br>
 	<div ng-show="currentStep == 1" class="col-xs-offset-2 col-xs-8 col-md-offset-5 col-md-2">
-		<div class="signin form-horizontal">
+		<form ng-submit="addInterest()"  class="signin form-horizontal">
 			<fieldset>
 				<div class="form-group">
 					<label>What are your interests?</label>
-					<input type="text" required class="form-control" ng-model="tempInterest">
-				</div>
-				<div class="text-center form-group">
-					<button ng-click="credentials.interests.push(tempInterest); tempInterest = ''" class="btn btn-large btn-primary">Add</button>
-				</div>
-				<div class="text-center form-group">
-					<button ng-click="currentStep = 2" class="btn btn-large btn-primary">Next</button>
+					<input type="text" class="form-control" ng-model="tempInterest">
 				</div>
 			</fieldset>
-		</div>
+		</form>
+        <div class="text-center form-group">
+            <button ng-click="currentStep = 2" class="btn btn-large btn-primary">Next</button>
+        </div>
+        <table class="table">
+            <tr ng-repeat="interest in credentials.interests">
+                <td>{{interest}}</td>
+            </tr>
+        </table>
 	</div>
 	<div ng-show="currentStep == 2" class="col-xs-offset-2 col-xs-8 col-md-offset-5 col-md-2">
 		<div class="signin form-horizontal">

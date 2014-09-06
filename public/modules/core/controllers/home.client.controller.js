@@ -23,5 +23,15 @@ angular.module('core').controller('HomeController', ['$scope', '$http', 'Authent
 				$scope.error = response.message;
 			});
 		};
-	}
+        
+        $scope.addInterest = function () {
+            if ($scope.tempInterest) {
+                $scope.credentials.interests.push($scope.tempInterest);
+                $scope.tempInterest = '';
+            }
+        };
+
+            
+
+    }
 ]);
