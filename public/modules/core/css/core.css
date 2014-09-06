@@ -13,3 +13,22 @@
 .ng-valid.ng-dirty{
     border-color:#78FA89;
 }
+
+body {
+	background-color: #F1F2F5;
+}
+
+section .container {
+	background-color: #FFFFFF;
+	width: 850px;
+	padding-top: 30px;
+}
+
+.content {
+	margin-top: 125px;
+}
+
+body {
+	font-family: 'Open Sans', sans-serif;
+	color: #204056;	
+}
