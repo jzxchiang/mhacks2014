@@ -5,32 +5,40 @@
  */
 var _ = require('lodash'),
 	mongoose = require('mongoose'),
+	async = require('async'),
 	User = mongoose.model('User'),
 	Interest = mongoose.model('Interest');
 
 var create = function (req, res) {
 	var user = req.body;
-
 	var interestIds = [];
-	_.forEach(user.interests, function (interest) {
+	var newInterestModels = [];
+
+	async.each(user.interests, function (interest, done) {
 		Interest.findOne({'name': interest}, function (err, interestDoc) {
-			if (!interestDoc) {
-				var newInterestDoc = new Interest({name: interest});
-				newInterestDoc.save();
+			if (interestDoc) {
+				interestIds.push(mongoose.Types.ObjectId(interestDoc._id));
+				done();
 			} else {
-				var interestId = mongoose.Types.ObjectId(interestDoc._id);
-				interestIds.push(interestId);
+				var newInterest = new Interest({name: interest});
+				newInterest.save(function (err, newInterestDoc) {
+					interestIds.push(mongoose.Types.ObjectId(newInterestDoc._id));
+					done();
+				});
 			}
 		});
-	});
-	user.interests = interestIds;
+	}, function (err) {
+		console.log(interestIds);
+		user.interests = interestIds;
 
-	var userModel = new User(user);
+		console.log(user);
+		var userModel = new User(user);
 
-	userModel.save(function (err) {
-		if (!err) {
-			res.jsonp('Works great!');
-		}
+		userModel.save(function (err) {
+			if (!err) {
+				res.jsonp('Works great!');
+			}
+		});
 	});
 };
 
