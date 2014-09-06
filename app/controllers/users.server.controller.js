@@ -29,10 +29,13 @@ function _sendEmail (user, matchedUser) {
 
 	// send mail with defined transport object
 	transporter.sendMail(mailOptions, function (error, info) {
-	    if(error){
+	    if (error){
 	        console.log(error);
 	    } else {
 	        console.log('Message sent: ' + info.response);
+	        User.update({'_id': user._id}, {matched: true}, {multi: false}, function (err) {
+	        	console.log('hello!');
+	        });
 	    }
 	});
 }
@@ -47,7 +50,9 @@ function _matchUser (user) {
 			});			
 
 			if (matchedInterests.length > maxMatches) {
-				if (user.name !== otherUser.name && user.email !== otherUser.email)	{
+				console.log(user);
+				console.log(otherUser);
+				if (!otherUser.matched && (user.name !== otherUser.name || user.email !== otherUser.email)) {
 					maxMatches = matchedInterests.length;
 					bestMatchSoFar = otherUser;
 				}
@@ -87,7 +92,7 @@ var create = function (req, res) {
 		var userModel = new User(user);
 		userModel.save(function (err) {
 			if (!err) {
-				_matchUser(user);
+				_matchUser(userModel);
 			} else {
 				console.log(err);
 			}

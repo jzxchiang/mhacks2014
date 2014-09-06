@@ -56,7 +56,11 @@ var UserSchema = new Schema({
 	interests: [{
 		type: Schema.ObjectId,
 		ref: 'Interest'
-	}]
+	}],
+	matched: {
+		type: Boolean,
+		default: false
+	}
 	/* For reset password */
 	// resetPasswordToken: {
 		// type: String
