@@ -14,10 +14,6 @@
     border-color:#78FA89;
 }
 
-body {
-	background-color: #f3f5f9;
-}
-
 section .container {
 	background-color: #f3f5f9;
 	width: 850px;
@@ -28,9 +24,19 @@ section .container .high {
 	margin-top: -25px;
 }
 
+.navbar-fixed-bottom {
+	padding-top: 26px;
+	padding-left: 31px;	
+	height: 10%;
+	background-color: #FFFFFF;
+	color: #3260c7;
+	font-size: 18px;
+}
+
 body {
 	font-family: 'Open Sans', sans-serif;
 	color: #5e6573;
+	background-color: #f3f5f9;
 	font-size: 24px;
 	letter-spacing: 0px;
 	font-weight: 300;
