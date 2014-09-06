@@ -15,20 +15,60 @@
 }
 
 body {
-	background-color: #F1F2F5;
+	background-color: #f3f5f9;
 }
 
 section .container {
-	background-color: #FFFFFF;
+	background-color: #f3f5f9;
 	width: 850px;
 	padding-top: 30px;
 }
 
-.content {
-	margin-top: 125px;
-}
-
 body {
 	font-family: 'Open Sans', sans-serif;
-	color: #204056;	
+	color: #5e6573;
+	font-size: 24px;
+	letter-spacing: 0px;
+	font-weight: 300;
+	-webkit-font-smoothing: antialiased;
 }
+
+.title-color {
+	color: #3260c7;
+	font-size: 36px;
+}
+
+.flat-green {
+	background-color: #8dcd33;
+	color: white;
+	border-radius: 0;
+	width: 200px;
+	height: 50px;
+	font-size: 26px;
+}
+
+.flat-green:hover {
+	background-color: #ABF345;
+	color: white;
+}
+
+.narrower {
+	width: 300px;
+}
+
+.animate-show {
+  opacity: 1;
+}
+
+.animate-show {
+  -webkit-transition:all linear 0.5s;
+  transition:all linear 0.5s;
+}
+
+.animate-show.ng-hide {
+  opacity: 0;
+}
+
+
+
+
