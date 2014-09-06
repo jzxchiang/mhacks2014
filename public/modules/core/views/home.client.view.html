@@ -1,6 +1,6 @@
 <section data-ng-controller="HomeController">
-	<div ng-show="currentStep == 1" class="col-xs-offset-2 col-xs-8 col-md-offset-3 col-md-6">
-		<h2 class="text-center">
+	<div ng-show="currentStep == 1" class="col-xs-offset-2 col-xs-8 col-md-offset-2 col-md-9">
+		<h2 class="text-center title-color">
 			Welcome to Find-a-Friend!
 		</h2>
 		<br>
@@ -14,34 +14,41 @@
 			</fieldset>
 		</form>
         <div class="text-center form-group">
-            <button ng-click="currentStep = 2" class="btn btn-large btn-primary">Next</button>
+            <button ng-click="currentStep = 2" class="btn flat-green">Next</button>
         </div>
-        <table class="table">
+        <table class="table text-center">
             <tr ng-repeat="interest in credentials.interests">
                 <td>{{interest}}</td>
             </tr>
         </table>
 	</div>
-	<div ng-show="currentStep == 2" class="col-xs-offset-2 col-xs-8 col-md-offset-4 col-md-4">
-		<div class="signin form-horizontal">
+	<div ng-show="currentStep == 2" class="col-xs-offset-2 col-xs-8 col-md-offset-4 col-md-4 animate-show">
+		<h2 class="text-center title-color">
+			Final step!
+		</h2>
+		<br>
+		<div class="signin form-horizontal text-center">
 			<fieldset>
 				<div class="form-group">
-					<label>What's your name?</label>
+					<p>What's your name?</p>
 					<input type="text" required class="form-control" ng-model="credentials.name">
 				</div>
 				<div class="form-group">
-					<label>And your email?</label>
+					<p>And your email?</p>
 					<input type="email" required class="form-control" ng-model="credentials.email">
 				</div>
 				<div class="text-center form-group">
-					<button ng-click="postUser(); currentStep = 3" class="btn btn-large btn-primary">Next</button>
+					<button ng-click="postUser(); currentStep = 3" class="btn flat-green">Next</button>
 				</div>
 			</fieldset>
 		</div>
 	</div>
-	<div ng-show="currentStep == 3" class="col-xs-offset-2 col-xs-8 col-md-offset-3 col-md-6">
+	<div ng-show="currentStep == 3" class="col-xs-offset-2 col-xs-8 col-md-offset-3 col-md-6 animate-show">
+		<h2 class="text-center title-color">
+			You're done!
+		</h2>
 		<br>
-		<p>You will be notified as soon as a match is available. :)</p>
+		<p class="text-center">You will be notified as soon as a match is available. :)</p>
 		<br><br>
 	</div>
 </section>
