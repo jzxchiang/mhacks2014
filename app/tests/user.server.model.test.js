@@ -36,6 +36,7 @@ describe('User Model Unit Tests:', function() {
 		});
 
 		it('should be able to save without problems', function(done) {
+			this.timeout(10000);
 			user.save(done);
 		});
 
