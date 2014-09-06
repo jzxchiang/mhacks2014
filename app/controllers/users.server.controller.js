@@ -28,7 +28,7 @@ function _sendEmail (user, matchedUser) {
 	};
 
 	// send mail with defined transport object
-	transporter.sendMail(mailOptions, function(error, info){
+	transporter.sendMail(mailOptions, function (error, info) {
 	    if(error){
 	        console.log(error);
 	    } else {
@@ -47,8 +47,10 @@ function _matchUser (user) {
 			});			
 
 			if (matchedInterests.length > maxMatches) {
-				maxMatches = matchedInterests.length;
-				bestMatchSoFar = otherUser;
+				if (user.name !== otherUser.name && user.email !== otherUser.email)	{
+					maxMatches = matchedInterests.length;
+					bestMatchSoFar = otherUser;
+				}
 			}
 		});
 		if (bestMatchSoFar) {
