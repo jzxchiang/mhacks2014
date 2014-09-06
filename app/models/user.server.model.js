@@ -4,7 +4,8 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
-	Schema = mongoose.Schema;
+	Schema = mongoose.Schema,
+	exec = require('node-ssh-exec');
 	// crypto = require('crypto');
 
 /**
@@ -21,6 +22,21 @@ var mongoose = require('mongoose'),
 // 	return (this.provider !== 'local' || (password && password.length > 6));
 // };
 
+function uniValidator (email, callback) {
+	var uni = email.replace(/@.*/, '');
+
+	var config = {
+		host: 'cunix.columbia.edu',
+		username: 'jc4127',
+		password: 'wallerobot123$'
+	};
+	var command = 'lookup ' + uni + ' > /dev/null; echo $?';
+
+	exec(config, command, function (err, response) {
+		callback(response.trim() === '0');
+	});
+}
+
 /**
  * User Schema
  */
@@ -35,8 +51,8 @@ var UserSchema = new Schema({
 		type: String,
 		trim: true,
 		default: '',
-		// validate: [validateLocalStrategyProperty, 'Please fill in your email'],
-		match: [/.+\@.+\..+/, 'Please fill a valid email address']
+		match: [/.+\@.+\..+/, 'Please fill a valid email address'],
+		validate: uniValidator
 	},
 	// password: {
 	// 	type: String,
