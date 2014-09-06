@@ -21,7 +21,11 @@ body {
 section .container {
 	background-color: #f3f5f9;
 	width: 850px;
-	padding-top: 30px;
+	padding-top: 85px;
+}
+
+section .container .high {
+	margin-top: -25px;
 }
 
 body {
