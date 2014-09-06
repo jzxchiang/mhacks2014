@@ -5,12 +5,13 @@
  */
 var should = require('should'),
 	mongoose = require('mongoose'),
-	User = mongoose.model('User');
+	User = mongoose.model('User'),
+	Interest = mongoose.model('Interest');
 
 /**
  * Globals
  */
-var user, user2;
+var user;
 
 /**
  * Unit tests
@@ -18,22 +19,9 @@ var user, user2;
 describe('User Model Unit Tests:', function() {
 	before(function(done) {
 		user = new User({
-			firstName: 'Full',
-			lastName: 'Name',
-			displayName: 'Full Name',
-			email: 'test@test.com',
-			username: 'username',
-			password: 'password',
-			provider: 'local'
-		});
-		user2 = new User({
-			firstName: 'Full',
-			lastName: 'Name',
-			displayName: 'Full Name',
-			email: 'test@test.com',
-			username: 'username',
-			password: 'password',
-			provider: 'local'
+			name: 'Justin Chiang',
+			email: 'jc4127@columbia.edu',
+			interests: [ mongoose.Types.ObjectId((new Interest({name: 'hockey'}))._id) ]
 		});
 
 		done();
@@ -51,21 +39,6 @@ describe('User Model Unit Tests:', function() {
 			user.save(done);
 		});
 
-		it('should fail to save an existing user again', function(done) {
-			user.save();
-			return user2.save(function(err) {
-				should.exist(err);
-				done();
-			});
-		});
-
-		it('should be able to show an error when try to save without first name', function(done) {
-			user.firstName = '';
-			return user.save(function(err) {
-				should.exist(err);
-				done();
-			});
-		});
 	});
 
 	after(function(done) {
