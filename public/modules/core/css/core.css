@@ -56,19 +56,13 @@ body {
 	width: 300px;
 }
 
-.animate-show {
-  opacity: 1;
+.ng-enter {
+	-webkit-transition:all linear 0.5s;
+	transition:all linear 0.5s;
+	opacity: 0;
 }
 
-.animate-show {
-  -webkit-transition:all linear 0.5s;
-  transition:all linear 0.5s;
+.ng-enter.ng-enter-active {
+	opacity: 1;
 }
-
-.animate-show.ng-hide {
-  opacity: 0;
-}
-
-
-
 
