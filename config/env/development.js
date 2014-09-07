@@ -3,7 +3,7 @@
 module.exports = {
 	db: 'mongodb://localhost/mhacks2014-dev',
 	app: {
-		title: 'mhacks2014 - Development Environment'
+		title: 'Impetus - Development Environment'
 	},
 	facebook: {
 		clientID: process.env.FACEBOOK_ID || 'APP_ID',
