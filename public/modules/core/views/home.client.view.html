@@ -1,14 +1,14 @@
 <section data-ng-controller="HomeController">
 	<div ng-if="currentStep == 1" class="col-xs-offset-2 col-xs-8 col-md-offset-2 col-md-8">
 		<h4 class="text-center title-color">
-			Tired of always eating alone?
+			Breaking ice while breaking bread.	
 		</h4>
 		<br>
 		<p></p>
 		<form ng-submit="$parent.addInterest()"  class="signin form-horizontal">
 			<fieldset>
 				<div class="form-group text-center">
-					<p>What are your interests (one at a time)?</p>
+					<p>What are your interests?</p>
 					<input id="input-one" type="text" class="form-control shorter" ng-model="$parent.tempInterest" ng-maxlength="16" style="width: 400px; display: inline-block;" placeholder="Press Enter after each interest...">
 				</div>
 			</fieldset>
@@ -41,7 +41,7 @@
 				</div>
 				<br>
 				<div class="text-center form-group">
-					<button ng-click="$parent.postUser()" class="btn flat-green">Next</button>
+					<button ng-click="$parent.postUser()" class="btn flat-green">Match</button>
 				</div>
 			</fieldset>
 		</div>

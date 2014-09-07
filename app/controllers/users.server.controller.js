@@ -17,13 +17,13 @@ var transporter = nodemailer.createTransport({
 });
 
 
-function _sendEmail (user, matchedUser) {
+function _sendEmail (user, matchedUser, commonInterest) {
 	var mailOptions = {
 	    from: 'MHacks ✔ <nodemailer122895@gmail.com>',
 	    to: user.email,
 	    subject: 'Your Match',
-	    text: 'Hi ' + user.name + ', \n\nYou have been matched with ' + matchedUser.name + '!\n Email: ' + matchedUser.email,
-	    html: 'Hi ' + user.name + ', \n\nYou have been matched with ' + matchedUser.name + '!\n Email: ' + matchedUser.email
+	    text: 'Hi ' + user.name + ', \n\nYou have been matched with ' + matchedUser.name + '! (email: ' + matchedUser.email +
+	    	  ')\nBoth of you indicated an interest in ' + commonInterest.name + '!'
 	};
 
 	transporter.sendMail(mailOptions, function (err, info) {
@@ -31,7 +31,11 @@ function _sendEmail (user, matchedUser) {
 	        console.log(err);
 	    } else {
 	        console.log('Message sent: ' + info.response);
-	        User.update({'_id': user._id}, {matched: true}, {multi: false});
+	        User.update({'_id': user._id}, {matched: true}, {multi: false}, function (err) {
+	        	if (err) {
+	        		console.log(err);
+	        	}
+	        });
 	    }
 	});
 }
@@ -39,24 +43,30 @@ function _sendEmail (user, matchedUser) {
 
 function _matchUser (user) {
 	var maxMatches = 0;
-	var bestMatchSoFar;
+	var commonInterest, bestMatchSoFar;
+
 	User.find({}, function (err, allUsers) {
 		_.forEach(allUsers, function (otherUser) {
-			var matchedInterests = user.interests.filter(function (interest) {
+			var commonInterests = user.interests.filter(function (interest) {
 				return otherUser.interests.indexOf(interest) !== -1;
 			});
 
-			if (matchedInterests.length > maxMatches) {
+			if (commonInterests.length > maxMatches) {
 				if (!otherUser.matched && (user.name !== otherUser.name || user.email !== otherUser.email)) {
-					maxMatches = matchedInterests.length;
+					maxMatches = commonInterests.length;
 					bestMatchSoFar = otherUser;
 				}
 			}
 		});
 
 		if (bestMatchSoFar) {
-			_sendEmail(user, bestMatchSoFar);
-			_sendEmail(bestMatchSoFar, user);
+			var commonInterests = user.interests.filter(function (interest) {
+				return bestMatchSoFar.interests.indexOf(interest) !== -1;
+			});
+			Interest.findById(commonInterests[0], function (err, commonInterest) {
+				_sendEmail(user, bestMatchSoFar, commonInterest);
+				_sendEmail(bestMatchSoFar, user, commonInterest);
+			});
 		}
 	});
 }
