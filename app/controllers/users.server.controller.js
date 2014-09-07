@@ -1,14 +1,12 @@
 'use strict';
 
-/**
- * Module dependencies.
- */
 var _ = require('lodash'),
 	mongoose = require('mongoose'),
 	async = require('async'),
 	User = mongoose.model('User'),
 	Interest = mongoose.model('Interest'),
 	nodemailer = require('nodemailer');
+
 
 var transporter = nodemailer.createTransport({
     service: 'Gmail',
@@ -18,27 +16,26 @@ var transporter = nodemailer.createTransport({
     }
 });
 
+
 function _sendEmail (user, matchedUser) {
 	var mailOptions = {
-	    from: 'MHacks ✔ <nodemailer122895@gmail.com>', // sender address
-	    to: user.email, // list of receivers
-	    subject: 'Your Match', // Subject line
-	    text: 'Hi ' + user.name + ', \n\nYou have been matched with ' + matchedUser.name + '!\n Email: ' + matchedUser.email, // plaintext body
+	    from: 'MHacks ✔ <nodemailer122895@gmail.com>',
+	    to: user.email,
+	    subject: 'Your Match',
+	    text: 'Hi ' + user.name + ', \n\nYou have been matched with ' + matchedUser.name + '!\n Email: ' + matchedUser.email,
 	    html: 'Hi ' + user.name + ', \n\nYou have been matched with ' + matchedUser.name + '!\n Email: ' + matchedUser.email
 	};
 
-	// send mail with defined transport object
 	transporter.sendMail(mailOptions, function (err, info) {
 	    if (err) {
 	        console.log(err);
 	    } else {
 	        console.log('Message sent: ' + info.response);
-	        User.update({'_id': user._id}, {matched: true}, {multi: false}, function (err) {
-	        	console.log('hello!');
-	        });
+	        User.update({'_id': user._id}, {matched: true}, {multi: false});
 	    }
 	});
 }
+
 
 function _matchUser (user) {
 	var maxMatches = 0;
