@@ -24,6 +24,10 @@ section .container .high {
 	margin-top: -25px;
 }
 
+p {
+	text-shadow: 1px 1px 1px #ccc;
+}
+
 .navbar-fixed-bottom {
 	padding-top: 26px;
 	padding-left: 31px;	
@@ -37,7 +41,7 @@ body {
 	font-family: 'Open Sans', sans-serif;
 	color: #5e6573;
 	background-color: #f3f5f9;
-	font-size: 24px;
+	font-size: 22px;
 	letter-spacing: 0px;
 	font-weight: 300;
 	-webkit-font-smoothing: antialiased;
@@ -58,7 +62,8 @@ body {
 
 .title-color {
 	color: #3260c7;
-	font-size: 36px;
+	font-size: 32px;
+	text-shadow: 0.5px 0.5px 0.5px #ccc;
 }
 
 .flat-green {
@@ -67,7 +72,8 @@ body {
 	border-radius: 0;
 	width: 200px;
 	height: 50px;
-	font-size: 26px;
+	font-size: 20px;
+	box-shadow: 0 0 1px 1px #ccc;
 }
 
 .flat-green:hover {
