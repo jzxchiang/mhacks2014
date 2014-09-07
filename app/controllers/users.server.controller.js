@@ -28,9 +28,9 @@ function _sendEmail (user, matchedUser) {
 	};
 
 	// send mail with defined transport object
-	transporter.sendMail(mailOptions, function (error, info) {
-	    if (error){
-	        console.log(error);
+	transporter.sendMail(mailOptions, function (err, info) {
+	    if (err) {
+	        console.log(err);
 	    } else {
 	        console.log('Message sent: ' + info.response);
 	        User.update({'_id': user._id}, {matched: true}, {multi: false}, function (err) {
@@ -47,39 +47,35 @@ function _matchUser (user) {
 		_.forEach(allUsers, function (otherUser) {
 			var matchedInterests = user.interests.filter(function (interest) {
 				return otherUser.interests.indexOf(interest) !== -1;
-			});			
+			});
 
 			if (matchedInterests.length > maxMatches) {
-				console.log(user);
-				console.log(otherUser);
 				if (!otherUser.matched && (user.name !== otherUser.name || user.email !== otherUser.email)) {
 					maxMatches = matchedInterests.length;
 					bestMatchSoFar = otherUser;
 				}
 			}
 		});
+
 		if (bestMatchSoFar) {
 			_sendEmail(user, bestMatchSoFar);
 			_sendEmail(bestMatchSoFar, user);
 		}
 	});
-
-
 }
 
 
 var create = function (req, res) {
 	var user = req.body;
 	var interestIds = [];
-	var newInterestModels = [];
 
 	async.each(user.interests, function (interest, done) {
-		Interest.findOne({'name': interest}, function (err, interestDoc) {
+		Interest.findOne({'name': interest.toLowerCase()}, function (err, interestDoc) {
 			if (interestDoc) {
 				interestIds.push(mongoose.Types.ObjectId(interestDoc._id));
 				done();
 			} else {
-				var newInterest = new Interest({name: interest});
+				var newInterest = new Interest({name: interest.toLowerCase()});
 				newInterest.save(function (err, newInterestDoc) {
 					interestIds.push(mongoose.Types.ObjectId(newInterestDoc._id));
 					done();
