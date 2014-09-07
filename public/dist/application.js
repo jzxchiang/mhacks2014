@@ -44,130 +44,35 @@ angular.element(document).ready(function () {
   angular.bootstrap(document, [ApplicationConfiguration.applicationModuleName]);
 });'use strict';
 // Use Applicaion configuration module to register a new module
-ApplicationConfiguration.registerModule('articles');'use strict';
-// Use Applicaion configuration module to register a new module
 ApplicationConfiguration.registerModule('core');'use strict';
 // Use Applicaion configuration module to register a new module
 ApplicationConfiguration.registerModule('users');'use strict';
-// Configuring the Articles module
-angular.module('articles').run([
-  'Menus',
-  function (Menus) {
-    // Set top bar menu items
-    Menus.addMenuItem('topbar', 'Articles', 'articles', 'dropdown', '/articles(/create)?');
-    Menus.addSubMenuItem('topbar', 'articles', 'List Articles', 'articles');
-    Menus.addSubMenuItem('topbar', 'articles', 'New Article', 'articles/create');
-  }
-]);'use strict';
-// Setting up route
-angular.module('articles').config([
-  '$stateProvider',
-  function ($stateProvider) {
-    // Articles state routing
-    $stateProvider.state('listArticles', {
-      url: '/articles',
-      templateUrl: 'modules/articles/views/list-articles.client.view.html'
-    }).state('createArticle', {
-      url: '/articles/create',
-      templateUrl: 'modules/articles/views/create-article.client.view.html'
-    }).state('viewArticle', {
-      url: '/articles/:articleId',
-      templateUrl: 'modules/articles/views/view-article.client.view.html'
-    }).state('editArticle', {
-      url: '/articles/:articleId/edit',
-      templateUrl: 'modules/articles/views/edit-article.client.view.html'
-    });
-  }
-]);'use strict';
-angular.module('articles').controller('ArticlesController', [
-  '$scope',
-  '$stateParams',
-  '$location',
-  'Authentication',
-  'Articles',
-  function ($scope, $stateParams, $location, Authentication, Articles) {
-    $scope.authentication = Authentication;
-    $scope.create = function () {
-      var article = new Articles({
-          title: this.title,
-          content: this.content
-        });
-      article.$save(function (response) {
-        $location.path('articles/' + response._id);
-        $scope.title = '';
-        $scope.content = '';
-      }, function (errorResponse) {
-        $scope.error = errorResponse.data.message;
-      });
-    };
-    $scope.remove = function (article) {
-      if (article) {
-        article.$remove();
-        for (var i in $scope.articles) {
-          if ($scope.articles[i] === article) {
-            $scope.articles.splice(i, 1);
-          }
-        }
-      } else {
-        $scope.article.$remove(function () {
-          $location.path('articles');
-        });
-      }
-    };
-    $scope.update = function () {
-      var article = $scope.article;
-      article.$update(function () {
-        $location.path('articles/' + article._id);
-      }, function (errorResponse) {
-        $scope.error = errorResponse.data.message;
-      });
-    };
-    $scope.find = function () {
-      $scope.articles = Articles.query();
-    };
-    $scope.findOne = function () {
-      $scope.article = Articles.get({ articleId: $stateParams.articleId });
-    };
-  }
-]);'use strict';
-//Articles service used for communicating with the articles REST endpoints
-angular.module('articles').factory('Articles', [
-  '$resource',
-  function ($resource) {
-    return $resource('articles/:articleId', { articleId: '@_id' }, { update: { method: 'PUT' } });
-  }
-]);'use strict';
-// Setting up route
 angular.module('core').config([
   '$stateProvider',
   '$urlRouterProvider',
   function ($stateProvider, $urlRouterProvider) {
-    // Redirect to home view when route not found
     $urlRouterProvider.otherwise('/');
-    // Home state routing
     $stateProvider.state('home', {
       url: '/',
       templateUrl: 'modules/core/views/home.client.view.html'
     });
   }
-]);'use strict';
-angular.module('core').controller('HeaderController', [
-  '$scope',
-  'Authentication',
-  'Menus',
-  function ($scope, Authentication, Menus) {
-    $scope.authentication = Authentication;
-    $scope.isCollapsed = false;
-    $scope.menu = Menus.getMenu('topbar');
-    $scope.toggleCollapsibleMenu = function () {
-      $scope.isCollapsed = !$scope.isCollapsed;
-    };
-    // Collapsing the menu after navigation
-    $scope.$on('$stateChangeSuccess', function () {
-      $scope.isCollapsed = false;
-    });
-  }
-]);'use strict';
+]);// 'use strict';
+// angular.module('core').controller('HeaderController', ['$scope', 'Authentication', 'Menus',
+// 	function($scope, Authentication, Menus) {
+// 		$scope.authentication = Authentication;
+// 		$scope.isCollapsed = false;
+// 		$scope.menu = Menus.getMenu('topbar');
+// 		$scope.toggleCollapsibleMenu = function() {
+// 			$scope.isCollapsed = !$scope.isCollapsed;
+// 		};
+// 		// Collapsing the menu after navigation
+// 		$scope.$on('$stateChangeSuccess', function() {
+// 			$scope.isCollapsed = false;
+// 		});
+// 	}
+// ]);
+'use strict';
 angular.module('core').controller('HomeController', [
   '$scope',
   '$http',
@@ -181,21 +86,44 @@ angular.module('core').controller('HomeController', [
       interests: []
     };
     $scope.currentStep = 1;
-    $scope.postUser = function () {
-      $http.post('/users', $scope.credentials).success(function (response) {
-        // If successful we assign the response to the global user model
-        $scope.authentication.user = response;
-        // And redirect to the index page
-        console.log('hello');
-      }).error(function (response) {
-        $scope.error = response.message;
-      });
-    };
     $scope.addInterest = function () {
       if ($scope.tempInterest) {
         $scope.credentials.interests.push($scope.tempInterest);
         $scope.tempInterest = '';
+        angular.element(document.querySelector('#input-one')).removeClass('red-placeholder red-border');
       }
+    };
+    $scope.checkInterests = function () {
+      if ($scope.credentials.interests.length !== 0) {
+        $scope.currentStep = 2;
+      } else {
+        angular.element(document.querySelector('#input-one')).attr('placeholder', 'Please enter at least one interest');
+        angular.element(document.querySelector('#input-one')).addClass('red-placeholder red-border');
+      }
+    };
+    $scope.postUser = function () {
+      if ($scope.credentials.email && $scope.credentials.name) {
+        $http.post('/users', $scope.credentials).success(function (response) {
+          // If successful we assign the response to the global user model
+          $scope.authentication.user = response;
+          // And redirect to the index page
+          console.log('hello');
+        }).error(function (response) {
+          $scope.error = response.message;
+        });
+        $scope.currentStep = 3;
+      } else {
+        if (!$scope.credentials.name) {
+          angular.element(document.querySelector('#input-two')).attr('placeholder', 'Please enter your name');
+          angular.element(document.querySelector('#input-two')).addClass('red-placeholder red-border');
+        }
+        if (!$scope.credentials.email) {
+          angular.element(document.querySelector('#input-three')).attr('placeholder', 'Please enter a valid email');
+          angular.element(document.querySelector('#input-three')).addClass('red-placeholder red-border');
+        }
+      }
+    };
+    $scope.validateColumbiaEmail = function () {
     };
   }
 ]);'use strict';
