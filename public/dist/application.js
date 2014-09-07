@@ -78,6 +78,18 @@ angular.module('core').controller('HomeController', [
   '$http',
   'Authentication',
   function ($scope, $http, Authentication) {
+    $scope.tempInterest = undefined;
+    $scope.states = [
+      'Math',
+      'Baseball',
+      'Food',
+      'Cooking',
+      'Philosophy',
+      'Literature',
+      'Physics',
+      'Video Games',
+      'Basketball'
+    ];
     // This provides Authentication context.
     $scope.authentication = Authentication;
     $scope.credentials = {

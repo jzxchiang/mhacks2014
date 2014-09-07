@@ -9,7 +9,8 @@
 			<fieldset>
 				<div class="form-group text-center">
 					<p>What are your interests?</p>
-					<input id="input-one" type="text" class="form-control shorter" ng-model="$parent.tempInterest" ng-maxlength="16" style="width: 400px; display: inline-block;" placeholder="Press Enter after each interest...">
+					<input id="input-one" type="text" class="form-control shorter" ng-model="$parent.tempInterest" ng-maxlength="16" style="width: 400px; display: inline-block;" placeholder="Press Enter after each interest..." 
+					typeahead="state for state in states | filter:$viewValue | limitTo:8">
 				</div>
 			</fieldset>
 		</form>
@@ -55,3 +56,4 @@
 		<br><br>
 	</div>
 </section>
+
